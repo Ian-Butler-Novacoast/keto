@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
@@ -310,10 +311,13 @@ func (e *Engine) rolesGet(ctx context.Context, r *http.Request, ps httprouter.Pa
 	if err != nil {
 		return nil, err
 	}
-
+	id, unescapeErr := url.PathUnescape(ps.ByName("id"))
+	if unescapeErr != nil {
+		return nil, unescapeErr
+	}
 	return &kstorage.GetRequest{
 		Collection: roleCollection(f),
-		Key:        ps.ByName("id"),
+		Key:        id,
 		Value:      &p,
 	}, nil
 }
@@ -345,10 +349,14 @@ func (e *Engine) rolesDelete(ctx context.Context, r *http.Request, ps httprouter
 	if err != nil {
 		return nil, err
 	}
+	id, unescapeErr := url.PathUnescape(ps.ByName("id"))
+	if unescapeErr != nil {
+		return nil, unescapeErr
+	}
 
 	return &kstorage.DeleteRequest{
 		Collection: roleCollection(f),
-		Key:        ps.ByName("id"),
+		Key:        id,
 	}, nil
 }
 
@@ -446,10 +454,14 @@ func (e *Engine) policiesDelete(ctx context.Context, r *http.Request, ps httprou
 	if err != nil {
 		return nil, err
 	}
+	id, unescapeErr := url.PathUnescape(ps.ByName("id"))
+	if unescapeErr != nil {
+		return nil, unescapeErr
+	}
 
 	return &kstorage.DeleteRequest{
 		Collection: policyCollection(f),
-		Key:        ps.ByName("id"),
+		Key:        id,
 	}, nil
 }
 
@@ -460,10 +472,14 @@ func (e *Engine) policiesGet(ctx context.Context, r *http.Request, ps httprouter
 	if err != nil {
 		return nil, err
 	}
+	id, unescapeErr := url.PathUnescape(ps.ByName("id"))
+	if unescapeErr != nil {
+		return nil, unescapeErr
+	}
 
 	return &kstorage.GetRequest{
 		Collection: policyCollection(f),
-		Key:        ps.ByName("id"),
+		Key:        id,
 		Value:      &p,
 	}, nil
 }
